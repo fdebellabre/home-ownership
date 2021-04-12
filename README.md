@@ -1,6 +1,6 @@
-A simple [streamlit][https://streamlit.io/] app to compare financial outcomes over time of home ownership versus rental.
+A simple `streamlit` app to compare financial outcomes over time of home ownership versus rental.
 
-Une application [streamlit][https://streamlit.io/] pour calculer les mensualités d'un emprunt immobilier et savoir s'il vaut mieux acheter ou louer un bien immobilier (en fonction de la durée d'occupation).
+Une application `streamlit` pour calculer les mensualités d'un emprunt immobilier et savoir s'il vaut mieux acheter ou louer un bien immobilier (en fonction de la durée d'occupation).
 
 Les deux scénarios confrontés sont les suivants :
 
