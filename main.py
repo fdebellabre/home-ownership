@@ -150,4 +150,4 @@ st.plotly_chart(scat_loyer, config={'displayModeBar': False})
 
 
 with st.beta_expander("License et code source"):
-    st.markdown("Développé avec `python` et `streamlit`.\nLe code source est publié avec la license `GNU-GPLv3` sur https://github.com/fdebellabre/home-ownership")
+    st.markdown("Développé avec `python` et `streamlit`.\nLe code est [open-source](https://github.com/fdebellabre/home-ownership) et publié avec la license `GNU-GPLv3`.")
