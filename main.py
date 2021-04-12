@@ -53,18 +53,23 @@ def ownership_cost(loyer, prix, apport, n, r, tassur=0.004, i=None, notaire=0.08
 
     Nn = np.arange(1200)
     N0 = np.where(Nn>n, n, Nn)
-    L0 = np.append(L, np.zeros(1200-len(L)))
+    L = np.append(L, np.zeros(1200-len(L)))
 
+    # Scenario 1: renting
     cumloyer = loyer*(Nn+1)
     invest_apport = apport*((pow(1+i,Nn+1)-1))
     invest_savings = np.cumsum((m-loyer)*(pow(1+i,Nn+1)-1))
-
     loss_rent = cumloyer - invest_apport - invest_savings
-    loss_buysell = apport - prix*pow(1+tapprec, Nn+1) + L0 + m*(N0+1) + (Nn+1)*foncier/12
+
+    # Scenario 2: buying at time 0 then selling
+    invest_savings = (m-L)[np.argmax(m-L>0)]*np.where(Nn-n+1<0, 0, pow(1+i, Nn-n+2)-1) + np.cumsum(np.where(-L>=0, m-L, 0)*(pow(1+i, Nn-n+1)-1))
+    selling_price = prix*pow(1+tapprec, Nn+1)
+    loss_buysell = apport - selling_price + L + m*(N0+1) + (Nn+1)*foncier/12 - invest_savings
 
     diff = loss_rent - loss_buysell
 
     threshold = np.argmax(diff>=0)
+    if np.max(diff)<0: threshold=np.inf
 
     return(diff, m, icost, threshold)
 
@@ -108,7 +113,11 @@ df_loyer = pd.DataFrame(data={"Loyer équivalent":liste_loyer, "Seuil de profita
 #################### DISPLAY
 
 st.markdown('<center style="font-size: 50px";>Mensualités : {:,}&nbsp;€</center>'.format(round(mens)), unsafe_allow_html=True)
-st.markdown('<center style="font-size: 32px";>Seuil de profitabilité : {:,}&nbsp;mois</center>'.format(months_profitable), unsafe_allow_html=True)
+if np.isinf(months_profitable):
+    st.markdown('<center style="font-size: 32px";>L\'achat n\'est pas profitable.</center>', unsafe_allow_html=True)
+else:
+    st.markdown('<center style="font-size: 32px";>Seuil de profitabilité : {:,}&nbsp;mois</center>'.format(months_profitable), unsafe_allow_html=True)
+
 st.markdown("""
 ---
 # Calcul des mensualités
@@ -117,12 +126,17 @@ Dans le cadre d'un emprunt aux mensualités constantes, les mensualités s'élè
 
 st.markdown("""
 # Plutôt achat ou location ?
-On compare les deux options suivantes&nbsp;:
+Considérons les deux scénarios suivants&nbsp;:
 - Acheter le bien immobilier, y vivre, puis le revendre (sachant qu'il s'apprécie de {}&nbsp;% par an)
-- Louer le bien pour {:,}&nbsp;€ et placer l'apport et les mensualités au taux de {}&nbsp;%
+- Louer le bien pour {:,}&nbsp;€
+
+Dans tous les cas, on suppose que l'argent ne dort jamais&nbsp;: l'épargne constituée est immédiatement placée au taux de {}&nbsp;%.
 """.format(round(taux_apprec*100,2), loyer, round(taux_alt*100,2)))
 
-st.markdown('Selon ce scénario, l\'achat devient profitable à partir de **{x} mois** d\'occupation, soit {y} années.'.format(x=months_profitable, y=round(months_profitable/12,1)))
+if np.isinf(months_profitable):
+    st.markdown('Résultat : l\'achat ne devient pas profitable avant 100 années d\'occupation.'.format(x=months_profitable, y=round(months_profitable/12,1)))
+else:
+    st.markdown('Résultat : l\'achat devient profitable à partir de **{x} mois** d\'occupation, soit {y} années.'.format(x=months_profitable, y=round(months_profitable/12,1)))
 
 st.markdown('---')
 
