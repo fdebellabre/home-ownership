@@ -4,8 +4,10 @@ Une application `streamlit` pour calculer les mensualités d'un emprunt immobili
 
 Les deux scénarios confrontés sont les suivants :
 
-1. Achat du bien, puis revente à la fin de la durée d'occupation
-2. Location du bien et investissement de l'épargne constituée (l'équivalent de l'apport et des mensualités)
+1. Achat du bien, puis revente
+2. Location du bien
+
+Dans les deux cas, on suppose que l'argent ne dort jamais : l'épargne constituée est immédiatement placée.
 
 L'application calcule le temps d'occupation minimal à partir duquel l'achat est financièrement plus intéressant que la location.
 
@@ -35,8 +37,5 @@ $ python3 -m pip install -r requirements.txt
 # Utilisation
 
 ```bash
-$ streamlit run main.py
+$ streamlit run app.py
 ```
-
-
-
