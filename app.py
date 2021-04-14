@@ -29,13 +29,13 @@ liste_duree = list(range(5,26))
 liste_mens = []
 for j in liste_duree:
     liste_mens.append(monthly_payments((prix*(1+notaire)*(1+agence)-apport), j, taux)[2][1])
-df_duree = pd.DataFrame(data={"Durée de l'emprunt (années)":liste_duree, 'Mensualités':liste_mens})
+df_duree = pd.DataFrame(data={"Durée de l'emprunt (années)":liste_duree, 'Mensualités':liste_mens, 'Taille':1})
 
 liste_loyer = [z*50 for z in list(range(14,61))]
 liste_profit = []
 for k in liste_loyer:
     liste_profit.append(ownership_cost(k, prix, apport, duree, taux, taux_alt, notaire, agence, foncier, taux_apprec)[3])
-df_loyer = pd.DataFrame(data={"Loyer équivalent":liste_loyer, "Seuil de profitabilité (mois)":liste_profit})
+df_loyer = pd.DataFrame(data={"Loyer équivalent":liste_loyer, "Seuil de profitabilité (mois)":liste_profit, 'Taille':1})
 
 
 #################### DISPLAY
@@ -68,12 +68,12 @@ else:
 
 st.markdown('---')
 
-scat_duree = px.scatter(df_duree, x="Durée de l'emprunt (années)", y="Mensualités", title='Mensualités en fonction de la durée de l\'emprunt', size=np.repeat(1, df_duree.shape[0]), size_max=7)
-scat_duree.update_layout(margin=dict(l=0,r=0,b=0,t=50))
+scat_duree = px.scatter(df_duree, x="Durée de l'emprunt (années)", y="Mensualités", title='Mensualités en fonction de la durée de l\'emprunt', size='Taille', size_max=7, hover_data={'Taille':False})
+scat_duree.update_layout(margin=dict(l=0,r=0,b=0,t=50), hovermode='x')
 st.plotly_chart(scat_duree, config={'displayModeBar': False})
 
-scat_loyer = px.scatter(df_loyer, x="Loyer équivalent", y="Seuil de profitabilité (mois)", title='Seuil de profitabilité en fonction du loyer équivalent', size=np.repeat(1, df_loyer.shape[0]), size_max=7)
-scat_loyer.update_layout(margin=dict(l=0,r=0,b=0,t=50))
+scat_loyer = px.scatter(df_loyer, x="Loyer équivalent", y="Seuil de profitabilité (mois)", title='Seuil de profitabilité en fonction du loyer équivalent', size='Taille', size_max=7, hover_data={'Taille':False})
+scat_loyer.update_layout(margin=dict(l=0,r=0,b=0,t=50), hovermode='x')
 st.plotly_chart(scat_loyer, config={'displayModeBar': False})
 
 
