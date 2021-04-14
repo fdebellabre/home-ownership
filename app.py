@@ -68,11 +68,11 @@ else:
 
 st.markdown('---')
 
-scat_duree = px.scatter(df_duree, x="Durée de l'emprunt (années)", y="Mensualités", title='Mensualités en fonction de la durée de l\'emprunt')
+scat_duree = px.scatter(df_duree, x="Durée de l'emprunt (années)", y="Mensualités", title='Mensualités en fonction de la durée de l\'emprunt', size=np.repeat(1, df_duree.shape[0]), size_max=7)
 scat_duree.update_layout(margin=dict(l=0,r=0,b=0,t=50))
 st.plotly_chart(scat_duree, config={'displayModeBar': False})
 
-scat_loyer = px.scatter(df_loyer, x="Loyer équivalent", y="Seuil de profitabilité (mois)", title='Seuil de profitabilité en fonction du loyer équivalent')
+scat_loyer = px.scatter(df_loyer, x="Loyer équivalent", y="Seuil de profitabilité (mois)", title='Seuil de profitabilité en fonction du loyer équivalent', size=np.repeat(1, df_loyer.shape[0]), size_max=7)
 scat_loyer.update_layout(margin=dict(l=0,r=0,b=0,t=50))
 st.plotly_chart(scat_loyer, config={'displayModeBar': False})
 
